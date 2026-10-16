@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Variation</title>
+<meta name="description" content="IGCSE Biology 0610: a step-by-step walk-through of variation and mutation, with check questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a guided reading page. Section chips across the top; each section is the notes (with a diagram) followed by a check card that must be passed before moving on. */
+:root {
+  --bg: #edf2f1; --surface: #ffffff; --sunk: #f5f8f7; --ink: #14262b; --muted: #56696e; --line: #d2dedc;
+  --accent: #1c6676; --accent-ink: #ffffff; --accent-soft: #dcedf0;
+  --good: #1f7449; --good-bg: #e2f2e8; --bad: #b1372e; --bad-bg: #fbe8e5; --hint: #8d600c; --hint-bg: #fbf0d9;
+  --enz: #c9dfe4; --prod: #e0a33a; --enz-line: #1c6676; --sub: #5aa469; --sub-end: #2c6a3a; --inh: #d9534f; --comp: #c0392b; --nonc: #2b5fb8;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e191c; --surface: #162428; --sunk: #12201f; --ink: #e2eceb; --muted: #9bb0b2; --line: #2a3e42;
+    --accent: #63b8c8; --accent-ink: #08181b; --accent-soft: #1b3940;
+    --good: #72d09d; --good-bg: #163226; --bad: #f08d81; --bad-bg: #3b201c; --hint: #e6b85e; --hint-bg: #352a13;
+    --enz: #23474f; --prod: #e8b25a; --enz-line: #63b8c8; --sub: #6cc07c; --sub-end: #b5e8bf; --inh: #f07b72; --comp: #f07b72; --nonc: #7fa8f0;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+[hidden] { display: none !important; }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 56px; display: flex; flex-direction: column; gap: 16px; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(26px, 4vw, 34px); letter-spacing: -.01em; }
+h2 { font-size: clamp(22px, 3vw, 27px); }
+h4 { font-size: 17px; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+@media (max-width: 520px) { .card { padding: 15px; } body { font-size: 16px; } }
+
+/* Section chips */
+.chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin; }
+.chips button { flex: 0 0 auto; font: inherit; font-size: 13px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px 5px 6px; cursor: pointer; display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.chips button .n { font-family: var(--font-mono); font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--sunk); border: 1px solid var(--line); }
+.chips button.done .n { background: var(--good); color: var(--surface); border-color: var(--good); }
+.chips button[aria-current="step"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.chips button[aria-current="step"] .n { background: var(--accent-ink); color: var(--accent); border-color: var(--accent-ink); }
+.chips button:disabled { opacity: .5; cursor: not-allowed; }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Notes */
+.notes { display: flex; flex-direction: column; gap: 12px; max-width: 70ch; }
+.notes b { font-weight: 700; }
+ul.bonds { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 2px; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.tile { background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.tile.comp h4 { color: var(--comp); } .tile.nonc h4 { color: var(--nonc); }
+.note { font-size: 14px; color: var(--muted); }
+
+/* Figures */
+.fig { margin: 0; display: flex; flex-direction: column; gap: 8px; align-items: stretch; max-width: 100%; }
+.fig svg { width: 100%; max-width: 640px; height: auto; display: block; margin: 0 auto; }
+
+.fig figcaption { font-size: 14px; color: var(--muted); text-align: center; }
+.enz { fill: var(--enz); stroke: var(--enz-line); stroke-width: 2; }
+.sub { fill: var(--sub); }
+.sub-end { fill: var(--sub-end); }
+.inh { fill: var(--inh); }
+.figbg { fill: var(--surface); }
+.panel { fill: var(--sunk); stroke: var(--line); }
+.lbl { fill: var(--ink); font-family: var(--font-body); font-size: 14px; }
+.small-t { font-size: 12px; }
+.inh-t { fill: var(--inh); font-weight: 700; }
+.cap { fill: var(--muted); font-family: var(--font-body); font-size: 14px; }
+.lead { stroke: var(--muted); stroke-width: 1; }
+.bad-mark line { stroke: var(--bad); stroke-width: 3.5; stroke-linecap: round; }
+.good-mark { fill: none; stroke: var(--good); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.arrow { stroke: var(--muted); stroke-width: 2; }
+.arrow-head { fill: var(--muted); }
+.cone { fill: var(--good); opacity: .35; stroke: var(--good); stroke-width: 1; }
+.axis { stroke: var(--ink); stroke-width: 1.6; }
+.grid { stroke: var(--line); stroke-width: 1; }
+.dash { stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 6 5; }
+.guide { fill: none; stroke-width: 1.3; stroke-dasharray: 4 4; }
+.num { fill: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+.axis-t { fill: var(--ink); font-family: var(--font-body); font-size: 14px; }
+.curve .line { fill: none; stroke-width: 3; }
+.curve-t { font-weight: 700; font-size: 14px; }
+.c-normal .line { stroke: var(--ink); } .c-normal .guide { stroke: var(--ink); } .c-normal .curve-t { fill: var(--ink); }
+.c-comp .line { stroke: var(--comp); } .c-comp .guide { stroke: var(--comp); } .c-comp .curve-t { fill: var(--comp); }
+.c-nonc .line { stroke: var(--nonc); } .c-nonc .guide { stroke: var(--nonc); } .c-nonc .curve-t { fill: var(--nonc); }
+#inhib-fig .curve.off { display: none; }
+.toggles { display: flex; gap: 8px; flex-wrap: wrap; }
+.tog { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.tog.on { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+.tog { display: inline-flex; align-items: center; gap: 8px; }
+.tog .sw { width: 18px; height: 4px; border-radius: 2px; display: inline-block; opacity: .35; }
+.tog.on .sw { opacity: 1; }
+.sw-normal { background: var(--ink); } .sw-comp { background: var(--comp); } .sw-nonc { background: var(--nonc); }
+.tog:disabled { cursor: default; }
+.sat-caps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; font-size: 13px; color: var(--muted); }
+.sat-caps b { color: var(--ink); }
+@media (max-width: 560px) { .sat-caps { grid-template-columns: minmax(0, 1fr); } }
+
+
+.sub { color: var(--muted); margin-top: 6px; font-size: 15px; }
+.ext { display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: var(--hint-bg); color: var(--hint); vertical-align: middle; }
+h2 .ext { margin-left: 10px; font-size: 12px; }
+.chips button .ext { font-size: 9px; padding: 1px 4px; margin-left: 2px; }
+ul.pts { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.examtip { background: var(--hint-bg); border-radius: 8px; padding: 10px 14px; font-size: 15px; }
+.examtip b { color: var(--hint); }
+.prod { fill: var(--prod); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; font-size: 14px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lg { width: 20px; height: 4px; border-radius: 2px; display: inline-block; }
+.lg.c1 { background: var(--comp); } .lg.c2 { background: var(--ink); } .lg.c3 { background: var(--nonc); }
+ol.steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.bar.b-cont { fill: var(--accent); opacity: .55; } .bar.b-disc { fill: var(--comp); opacity: .75; }
+.bell { fill: none; stroke: var(--ink); stroke-width: 2.5; }
+.tick-r { font-size: 12px; }
+.num.b { fill: var(--ink); font-weight: 600; }
+.head { stroke: var(--muted); stroke-width: 3; }
+.ear { fill: var(--enz); stroke: var(--enz-line); stroke-width: 2.5; }
+.ear-in { fill: none; stroke: var(--enz-line); stroke-width: 2; }
+.lobe { fill: none; stroke: var(--hint); stroke-width: 4; }
+.lead { stroke: var(--muted); stroke-width: 1; }
+.chain { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; justify-content: center; }
+.chain > i { font-style: normal; align-self: center; color: var(--muted); font-size: 22px; font-weight: 700; }
+.part { flex: 1 1 140px; min-width: 0; background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; text-align: center; }
+.part.out { border-color: var(--accent); }
+@media (max-width: 560px) { .chain { flex-direction: column; } .chain .part { flex: none; } }
+.src4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .src4 { grid-template-columns: minmax(0, 1fr); } }
+.src4 .tile.new { border-color: var(--accent); }
+.tblwrap { overflow-x: auto; }
+table.st { border-collapse: collapse; width: 100%; font-size: 15px; }
+table.st th, table.st td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+table.st thead th { font-size: 13px; color: var(--muted); }
+.flow-arrow { fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Check card */
+.check { border-top: 4px solid var(--accent); }
+.qhead { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.stage { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+.stage.backup { background: var(--hint-bg); color: var(--hint); }
+.stage.retry { background: var(--accent); color: var(--accent-ink); }
+.trail { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.trail b { font-weight: 500; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--line); }
+.trail b.done { background: var(--sunk); border-color: transparent; text-decoration: line-through; }
+.trail b.on { border-color: var(--hint); color: var(--hint); }
+.stem { font-size: 18px; font-weight: 700; max-width: 66ch; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.opt:disabled { cursor: default; }
+.opt .k { width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center; font-family: var(--font-mono); background: var(--sunk); border: 1px solid var(--line); }
+.opt .mark { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.opt.right { border-color: var(--good); background: var(--good-bg); } .opt.right .k { background: var(--good); color: var(--surface); border-color: var(--good); } .opt.right .mark { color: var(--good); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-bg); } .opt.wrong .k { background: var(--bad); color: var(--surface); border-color: var(--bad); } .opt.wrong .mark { color: var(--bad); }
+.opt.dim { opacity: .55; }
+.log { display: flex; flex-direction: column; gap: 8px; }
+.msg { border-radius: 8px; padding: 11px 14px; }
+.msg h3 { font-family: var(--font-body); font-size: 15px; margin: 0 0 3px; }
+.msg.good { background: var(--good-bg); } .msg.good h3 { color: var(--good); }
+.msg.bad { background: var(--bad-bg); } .msg.bad h3 { color: var(--bad); }
+.msg.hint { background: var(--hint-bg); } .msg.hint h3 { color: var(--hint); }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 11px 20px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.passed { display: flex; flex-direction: column; gap: 6px; }
+.passed div { display: flex; gap: 10px; align-items: baseline; font-size: 15px; }
+.tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+.tag.first { background: var(--good-bg); color: var(--good); } .tag.help { background: var(--hint-bg); color: var(--hint); } .tag.miss { background: var(--bad-bg); color: var(--bad); }
+.big { font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 7vw, 56px); line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-size: .45em; color: var(--muted); font-weight: 500; }
+.secs { display: flex; flex-direction: column; gap: 8px; }
+.secs .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.linkbtn { font: inherit; font-size: 14px; color: var(--accent); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+ol.keys { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (max-width: 600px) {
+  .fig svg .lbl, .fig svg .cap, .fig svg .axis-t { font-size: 21px; }
+  .fig svg .curve-t { font-size: 20px; }
+  .fig svg .num { font-size: 17px; }
+  .fig svg .small-t { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">IGCSE Biology 0610 · Year 11</div>
+    <h1>Variation</h1>
+    <p class="sub">Sections marked <span class="ext">Extended</span> are for the Extended tier.</p>
+  </header>
+  <nav class="chips" id="chips" aria-label="Sections"></nav>
+  <main id="main" style="display:flex;flex-direction:column;gap:16px"></main>
+</div>
+<script>
+/* ===== Walk-through content: variation (IGCSE Biology 0610, Year 11) ===== */
+const SECTIONS = [
+ {
+  "id": "s1",
+  "title": "What is variation?",
+  "teach": "\n<p><b>Variation</b> is the <b>differences between individuals of the same species</b>.</p>\n<p><b>Phenotypic variation</b> is the difference in <b>features</b> (characteristics) between individuals of the same species, for example height, eye colour or blood group.</p>\n<p>Some of these differences are caused by differences in <b>genes</b>. This is called <b>genetic variation</b>.</p>\n<p class=\"examtip\"><b>Remember:</b> variation is always about the <b>same species</b>. A cat and a dog being different is not variation in this sense.</p>",
+  "checks": [
+   {
+    "id": "c1",
+    "q": "Which of these is an example of variation?",
+    "o": [
+     "Students in a class have different heights",
+     "A lion is much larger than a house cat",
+     "A rose plant is a different colour from a tulip",
+     "A shark lives in water and a horse on land"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Lions and house cats are different species. Variation is about differences within one species.",
+     "2": "Roses and tulips are different species, so this isn't variation within a species.",
+     "3": "Sharks and horses are different species. Variation compares individuals of the same species."
+    },
+    "x": "All the students belong to one species, humans, so their different heights are variation.",
+    "b": [
+     {
+      "q": "What is variation?",
+      "o": [
+       "Differences within one species",
+       "Differences between different species",
+       "Changes in an organism as it grows up",
+       "The number of species in a habitat"
+      ],
+      "a": 0,
+      "x": "Variation compares individuals of the same species."
+     },
+     {
+      "q": "Which pair belongs to the same species?",
+      "o": [
+       "Two people with different eyes",
+       "A dog and a wolf in the same zoo",
+       "A horse and a donkey on a farm",
+       "A frog and a toad in the same pond"
+      ],
+      "a": 0,
+      "x": "All humans are one species, so differences between them count as variation."
+     }
+    ]
+   },
+   {
+    "id": "c2",
+    "q": "What is meant by 'phenotypic variation'?",
+    "o": [
+     "Differences in features between individuals of a species",
+     "Differences between the species living in one habitat",
+     "Changes in the size of a population over time",
+     "The process of passing genes from parents to offspring"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Phenotypic variation is within one species, not between species.",
+     "2": "That's population change. Phenotypic variation is about features of individuals.",
+     "3": "That's inheritance. Phenotypic variation is about the features individuals end up with."
+    },
+    "x": "The phenotype is an organism's features. Phenotypic variation is how those features differ between individuals of the same species.",
+    "b": [
+     {
+      "q": "What does 'phenotype' mean?",
+      "o": [
+       "An organism's observable features",
+       "The number of chromosomes in a cell",
+       "The habitat an organism lives in",
+       "The food an organism eats"
+      ],
+      "a": 0,
+      "x": "Phenotype = the features you can observe or measure, such as height or blood group."
+     },
+     {
+      "q": "What is genetic variation?",
+      "o": [
+       "Differences caused by genes",
+       "Differences caused only by diet",
+       "Differences caused by accidents",
+       "Differences between different species"
+      ],
+      "a": 0,
+      "x": "Genetic variation is caused by differences in genes between individuals."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s2",
+  "title": "Continuous and discontinuous",
+  "teach": "\n<p>Phenotypic variation can be divided into two types, depending on how the measurements can be grouped.</p>\n<div class=\"two\">\n  <div class=\"tile\"><h4>Continuous variation</h4><p>There are <b>very many small degrees of difference</b> between individuals. They can be arranged in order and usually <b>measured on a scale</b>, with lots of \"in-between\" values.</p><p><b>Examples:</b> height, mass, finger length.</p></div>\n  <div class=\"tile\"><h4>Discontinuous variation</h4><p>There are <b>distinct categories</b>, with <b>no in-betweens</b>.</p><p><b>Examples:</b> blood group (A, B, AB or O), biological sex (male or female), whether you can roll your tongue or not.</p></div>\n</div>\n<p class=\"examtip\"><b>Quick test:</b> can someone be \"in between\"? If yes, it's continuous. If you are in one group or another, it's discontinuous.</p>",
+  "checks": [
+   {
+    "id": "c3",
+    "q": "Which of these shows discontinuous variation?",
+    "o": [
+     "Blood group",
+     "Height",
+     "Body mass",
+     "Finger length"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Height can take any value within a range (152.5 cm, 152.6 cm…), so it's continuous.",
+     "2": "Mass can take any value, with many in-between values, so it's continuous.",
+     "3": "Finger length is measured on a scale with many in-between values, so it's continuous."
+    },
+    "x": "Everyone is blood group A, B, AB or O. There are no in-between groups, so it's discontinuous variation.",
+    "b": [
+     {
+      "q": "What is special about discontinuous variation?",
+      "o": [
+       "Distinct groups, no in-betweens",
+       "It can be measured on a smooth scale",
+       "It is always caused by a person's diet",
+       "It only happens in flowering plants"
+      ],
+      "a": 0,
+      "x": "Discontinuous: you're in one category or another."
+     },
+     {
+      "q": "Can a person be 'halfway' between blood group A and blood group B?",
+      "o": [
+       "No, there are only distinct groups",
+       "Yes, many people are in between",
+       "Only if they are very young",
+       "Only if they have type AB parents"
+      ],
+      "a": 0,
+      "x": "AB is its own group, not an 'in-between'. There's no continuous scale."
+     }
+    ]
+   },
+   {
+    "id": "c4",
+    "q": "A student measures the leaf length of 50 leaves from one tree. What type of variation will she find?",
+    "o": [
+     "Continuous, because length has many in-between values",
+     "Discontinuous, because each leaf is a separate object",
+     "Discontinuous, as all leaves on one tree are identical",
+     "Continuous, because leaves can only be long or short"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Each leaf is separate, but its length can be any value on a scale. That's what matters.",
+     "2": "Leaves on a tree vary in length; they are not identical.",
+     "3": "'Only long or short' would be two categories, which is discontinuous. Length actually has many in-between values."
+    },
+    "x": "Length is measured on a scale and can take any value, such as 6.2 cm or 6.3 cm, so it shows continuous variation.",
+    "b": [
+     {
+      "q": "Which is a feature of continuous variation?",
+      "o": [
+       "Many small degrees of difference",
+       "Only two possible categories exist",
+       "No measurements can ever be taken",
+       "Every individual is exactly identical"
+      ],
+      "a": 0,
+      "x": "Continuous variation has a whole range of values between the extremes."
+     },
+     {
+      "q": "Which of these is measured on a continuous scale?",
+      "o": [
+       "Length in centimetres",
+       "Blood group",
+       "Tongue-rolling ability",
+       "Biological sex"
+      ],
+      "a": 0,
+      "x": "Length can be any value within a range, so it's continuous."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s3",
+  "title": "Graphs of variation",
+  "teach": "\n<p>The two types of variation give different-shaped graphs.</p>\n{{FIG:height}}\n<p><b>Continuous</b> variation gives a smooth, <b>bell-shaped curve</b> because of all the small degrees of difference. Most people are near the middle, and few are at the extremes. It's plotted as a <b>histogram</b>, with the bars touching.</p>\n{{FIG:blood}}\n<p><b>Discontinuous</b> variation gives a <b>step-like</b> shape with separate categories. It's plotted as a <b>bar chart</b>, with gaps between the bars.</p>",
+  "checks": [
+   {
+    "id": "c5",
+    "q": "Data on the heights of 200 students are plotted. What shape will the graph be?",
+    "o": [
+     "A smooth bell-shaped curve, most near the middle",
+     "A step-like bar chart with separate categories",
+     "A straight line rising from left to right",
+     "A flat line, as everyone has the same height"
+    ],
+    "a": 0,
+    "w": {
+     "1": "That shape is for discontinuous data such as blood group. Height is continuous.",
+     "2": "A straight line would show one variable increasing with another. This is a frequency graph.",
+     "3": "People's heights vary, so the graph won't be flat."
+    },
+    "x": "Height is continuous, so it gives a bell-shaped curve: most students are near the average height, with fewer very short or very tall.",
+    "b": [
+     {
+      "q": "Where are most individuals on a bell-shaped curve?",
+      "o": [
+       "Near the middle (the average)",
+       "At the very tallest end",
+       "At the very shortest end",
+       "Spread equally across every value"
+      ],
+      "a": 0,
+      "x": "The peak of the bell is around the average value."
+     },
+     {
+      "q": "What type of graph is used for continuous data such as height?",
+      "o": [
+       "A histogram, with bars touching",
+       "A bar chart, with gaps between bars",
+       "A pie chart",
+       "A line through the origin"
+      ],
+      "a": 0,
+      "x": "A histogram shows that the groups follow on from each other on a continuous scale."
+     }
+    ]
+   },
+   {
+    "id": "c6",
+    "q": "Using the blood group chart, which statement is correct?",
+    "o": [
+     "Group O is most common and AB least common",
+     "Group A is most common and B least common",
+     "All four blood groups are equally common",
+     "Group B is more common than group A"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Group A is 40%, but O is higher at 46%. B (9%) isn't the least common; AB is.",
+     "2": "The bars are very different heights, so the groups aren't equally common.",
+     "3": "B is only 9%, while A is 40%."
+    },
+    "x": "O = 46%, A = 40%, B = 9%, AB = 3%. So O is the most common and AB the least.",
+    "b": [
+     {
+      "q": "What percentage of the population is blood group AB?",
+      "o": [
+       "3%",
+       "9%",
+       "40%",
+       "46%"
+      ],
+      "a": 0,
+      "fixed": true,
+      "x": "AB is the shortest bar, at 3%."
+     },
+     {
+      "q": "Why are there gaps between the bars on the blood group chart?",
+      "o": [
+       "The groups are separate categories",
+       "To make the chart easier to colour in",
+       "Because some of the data are missing",
+       "Because blood groups change over time"
+      ],
+      "a": 0,
+      "x": "Gaps show that the categories are distinct: discontinuous variation."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s4",
+  "title": "Genetic or environmental?",
+  "teach": "\n<p>Phenotypic variation can be caused in two main ways:</p>\n<div class=\"two\">\n  <div class=\"tile\"><h4>Genetic</h4><p>Controlled entirely by <b>genes</b>.</p><p><b>Examples:</b> blood group, eye colour, biological sex, ability to roll your tongue, whether ear lobes are free or attached.</p></div>\n  <div class=\"tile\"><h4>Environmental</h4><p>Caused entirely by the <b>environment</b>. Here \"environmental\" means anything <b>outside the organism</b>: climate, diet, culture, lifestyle, accidents.</p><p><b>Examples:</b> a scar from an accident; weight gain from eating too much and exercising little; speaking a language with a certain accent; a plant in shade growing taller to reach light.</p></div>\n</div>\n{{FIG:ears}}",
+  "checks": [
+   {
+    "id": "c7",
+    "q": "Which of these is caused by environmental variation only?",
+    "o": [
+     "A scar on someone's arm from an accident",
+     "Whether someone's ear lobes are attached",
+     "Whether someone can roll their tongue",
+     "A person's blood group"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Ear lobe attachment is controlled by genes.",
+     "2": "Tongue rolling is listed in your notes as genetic.",
+     "3": "Blood group is controlled by genes."
+    },
+    "x": "A scar is caused by an accident, which is outside the organism, so it's environmental. It isn't inherited.",
+    "b": [
+     {
+      "q": "What does 'environmental' mean when talking about variation?",
+      "o": [
+       "Anything outside the organism",
+       "Only the weather and the climate",
+       "Only the genes from the parents",
+       "Only the type of habitat it lives in"
+      ],
+      "a": 0,
+      "x": "It includes climate, diet, culture, lifestyle and accidents during life."
+     },
+     {
+      "q": "Could a child inherit a scar from a parent?",
+      "o": [
+       "No, it's environmental",
+       "Yes, scars are passed on in genes",
+       "Only if it is a very large scar",
+       "Only if the mother has the scar"
+      ],
+      "a": 0,
+      "x": "Environmental features aren't controlled by genes, so they can't be inherited."
+     }
+    ]
+   },
+   {
+    "id": "c8",
+    "q": "Two seedlings from the same parent plant are grown, one in shade and one in full sunlight. The shaded one grows taller. What causes this difference?",
+    "o": [
+     "The environment: the shaded plant grows to reach light",
+     "Their genes: they must have different alleles for height",
+     "Their blood groups, which are different",
+     "A mutation that happened in the sunny plant"
+    ],
+    "a": 0,
+    "w": {
+     "1": "The plants came from the same parent, and the only difference was light, so the environment explains it.",
+     "2": "Plants don't have blood groups.",
+     "3": "Nothing suggests a mutation. The obvious difference is the light each plant received."
+    },
+    "x": "The plants differed only in their light conditions, so the difference in height is environmental variation. The shaded plant grows taller to reach more light.",
+    "b": [
+     {
+      "q": "In an experiment, what tells you a difference is environmental?",
+      "o": [
+       "Only the conditions differ",
+       "The organisms are different species",
+       "The organisms are different ages",
+       "The organisms are different colours"
+      ],
+      "a": 0,
+      "x": "If the genes are the same or similar and only the conditions differ, the cause is environmental."
+     },
+     {
+      "q": "Which is an environmental factor for a plant?",
+      "o": [
+       "The amount of light it gets",
+       "The genes it inherits from its parent",
+       "The alleles in its seeds",
+       "The species it belongs to"
+      ],
+      "a": 0,
+      "x": "Light, water, soil and temperature are all outside the plant."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s5",
+  "title": "Genes and environment together",
+  "ext": true,
+  "teach": "\n<p><b>Discontinuous</b> variation is usually caused by <b>genes alone</b>.</p>\n<p><b>Continuous</b> features often vary because of a <b>combination of genes and environment</b>. For example, with height:</p>\n{{FIG:gxe}}\n<ol class=\"steps\"><li>Tall parents pass genes for height to their children.</li><li>So their children have the <b>genetic potential</b> to be tall too.</li><li>But if their <b>diet is poor</b>, they won't grow very well.</li><li>So the <b>environment</b> also affects their height.</li></ol>\n<p>Another way to say this: <b>genes decide which characteristics are inherited</b>, but the <b>environment affects how those characteristics develop</b>.</p>",
+  "checks": [
+   {
+    "id": "c9",
+    "q": "Identical twins share the same genes. They are raised apart, and one twin grows 8 cm taller. What is the most likely cause?",
+    "o": [
+     "A difference in environment, such as diet",
+     "A difference in their blood groups",
+     "They inherited different genes for height",
+     "Height is discontinuous variation"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Identical twins have the same blood group, and blood group doesn't control height.",
+     "2": "Identical twins have the same genes, so genes can't explain the difference.",
+     "3": "Height is continuous variation."
+    },
+    "x": "Their genes are identical, so the difference must come from the environment, for example diet or illness while growing.",
+    "b": [
+     {
+      "q": "What do identical twins have in common?",
+      "o": [
+       "The same genes",
+       "The same scars",
+       "The same diet throughout life",
+       "The same weight at all times"
+      ],
+      "a": 0,
+      "x": "Identical twins form from one fertilised egg, so their genes are the same."
+     },
+     {
+      "q": "How can a poor diet affect height?",
+      "o": [
+       "A child may not reach their genetic potential",
+       "It changes the genes for height",
+       "It turns height into discontinuous variation",
+       "It has no effect on growth"
+      ],
+      "a": 0,
+      "x": "Genes set the potential; poor diet can stop a person reaching it."
+     }
+    ]
+   },
+   {
+    "id": "c10",
+    "q": "Which statement best describes how genes and environment affect continuous features?",
+    "o": [
+     "Genes set the potential; environment shapes it",
+     "Only genes affect continuous features",
+     "Only the environment affects continuous features",
+     "Genes and environment have no effect on features"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Genes matter, but continuous features like height are also affected by environment, such as diet.",
+     "2": "Environment matters, but genes also set limits; tall parents tend to have tall children.",
+     "3": "Both genes and environment affect features."
+    },
+    "x": "Genes decide what characteristics are inherited, and the environment affects how they develop. Continuous features usually depend on both.",
+    "b": [
+     {
+      "q": "Which type of variation is usually caused by genes alone?",
+      "o": [
+       "Discontinuous variation",
+       "Continuous variation",
+       "Both types equally often",
+       "Neither type of variation"
+      ],
+      "a": 0,
+      "x": "Discontinuous features like blood group are controlled by genes alone."
+     },
+     {
+      "q": "Which feature is affected by both genes and environment?",
+      "o": [
+       "Body mass",
+       "Blood group",
+       "Biological sex",
+       "Ear lobe attachment"
+      ],
+      "a": 0,
+      "x": "Mass depends on genes and on diet and exercise."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s6",
+  "title": "Mutation",
+  "teach": "\n<p><b>Mutations</b> are <b>genetic changes</b>. They happen spontaneously and continuously.</p>\n<ul class=\"pts\">\n  <li><b>Most mutations have no effect</b> on the phenotype: the protein made by the mutated gene may work just as well as before.</li>\n  <li>Some produce <b>new alleles</b> and so new phenotypes. Most of these have only a small effect.</li>\n  <li>Occasionally a new allele gives a <b>survival advantage</b>. For example, a mutation changes a bird's feather colour, making it more attractive to mates, so it breeds more often and passes the allele on.</li>\n  <li>Some mutations are <b>harmful</b> and have dramatic effects, for example <b>sickle cell anaemia</b> in humans.</li>\n</ul>\n<p>The rate of mutation is <b>increased</b> by:</p>\n<ul class=\"pts\"><li><b>ionising radiation</b>, such as gamma rays and X-rays, which can damage DNA and change its base sequence</li><li>some <b>non-ionising radiation</b>, such as ultraviolet (UV)</li><li>certain <b>chemicals</b>, such as tar in tobacco smoke</li></ul>\n<p>Increased mutation rates can make cells become <b>cancerous</b>, which is why these are linked to more cancers.</p>",
+  "checks": [
+   {
+    "id": "c11",
+    "q": "Which of these increases the rate of mutation?",
+    "o": [
+     "X-rays",
+     "Drinking water",
+     "Regular exercise",
+     "Eating vegetables"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Water doesn't damage DNA.",
+     "2": "Exercise doesn't damage DNA or increase mutation rate.",
+     "3": "Vegetables don't increase mutation rate."
+    },
+    "x": "X-rays are ionising radiation. They can damage DNA and change its base sequence, so they increase the mutation rate. That's why radiographers stand behind a screen.",
+    "b": [
+     {
+      "q": "Which type of radiation increases mutation rate?",
+      "o": [
+       "Ionising radiation, e.g. X-rays",
+       "Visible light from a lamp",
+       "Radio waves from a mobile phone",
+       "Infrared heat from a fire"
+      ],
+      "a": 0,
+      "x": "Ionising radiation (gamma rays, X-rays) and some UV can damage DNA."
+     },
+     {
+      "q": "Which chemical in cigarette smoke increases mutation rate?",
+      "o": [
+       "Tar",
+       "Oxygen",
+       "Water vapour",
+       "Nitrogen"
+      ],
+      "a": 0,
+      "x": "Tar contains chemicals that can damage DNA, which is linked to lung cancer."
+     }
+    ]
+   },
+   {
+    "id": "c12",
+    "q": "Most mutations have no effect on the phenotype. Why?",
+    "o": [
+     "The protein may still work just as well",
+     "Mutations only happen in dead cells",
+     "Mutations are always repaired immediately",
+     "Mutations only affect the environment"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Mutations happen in living cells, spontaneously and continuously.",
+     "2": "Not all mutations are repaired. Some do change the phenotype.",
+     "3": "Mutations are changes to genes, not to the environment."
+    },
+    "x": "Even after a mutation, the gene may still make a protein that works just as well, so the phenotype doesn't change.",
+    "b": [
+     {
+      "q": "What is a mutation?",
+      "o": [
+       "A genetic change",
+       "A change in diet",
+       "A type of accident",
+       "A change in the weather"
+      ],
+      "a": 0,
+      "x": "A mutation is a change in the genetic material."
+     },
+     {
+      "q": "Which is an example of a harmful mutation?",
+      "o": [
+       "Sickle cell anaemia",
+       "A scar from a fall",
+       "Weight gain from overeating",
+       "A sun tan"
+      ],
+      "a": 0,
+      "x": "Sickle cell anaemia is caused by a mutation. The others are environmental."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s7",
+  "title": "Sources of genetic variation",
+  "ext": true,
+  "teach": "\n<p>Genetic variation in a population comes from four main sources:</p>\n{{FIG:sources}}\n<p>Mutations are <b>random changes to the base sequence of DNA</b>. They are the only way <b>new alleles</b> are formed. Meiosis, random mating and random fertilisation make <b>new combinations</b> of existing alleles.</p>",
+  "checks": [
+   {
+    "id": "c13",
+    "q": "Which source of genetic variation creates completely new alleles?",
+    "o": [
+     "Mutation",
+     "Random mating",
+     "Random fertilisation",
+     "Meiosis"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Random mating mixes existing alleles from two parents. It doesn't create new ones.",
+     "2": "Random fertilisation combines existing alleles in new ways.",
+     "3": "Meiosis makes new combinations of existing alleles, not new alleles."
+    },
+    "x": "A mutation is a random change to the base sequence of DNA, which can form a new allele. The other three only shuffle alleles that already exist.",
+    "b": [
+     {
+      "q": "What is a mutation, in terms of DNA?",
+      "o": [
+       "A change in DNA's base sequence",
+       "A change in the number of cells",
+       "Two gametes fusing together",
+       "Choosing a partner to mate with"
+      ],
+      "a": 0,
+      "x": "Mutations change the sequence of bases in DNA."
+     },
+     {
+      "q": "What does meiosis produce, in terms of alleles?",
+      "o": [
+       "New combinations of existing alleles",
+       "Brand-new alleles every time",
+       "Exactly identical copies of alleles",
+       "No alleles at all"
+      ],
+      "a": 0,
+      "x": "Meiosis shuffles existing alleles into new combinations in the gametes."
+     }
+    ]
+   },
+   {
+    "id": "c14",
+    "q": "Which of these explains why siblings with the same parents are not identical (except identical twins)?",
+    "o": [
+     "Different sperm and eggs fused each time",
+     "They all have different parents",
+     "They grew up in different countries",
+     "Mutations always happen in every child"
+    ],
+    "a": 0,
+    "w": {
+     "1": "The siblings have the same parents, as the question says.",
+     "2": "That could explain environmental differences, but not why their genes differ.",
+     "3": "Mutations do happen, but not always, and the main reason is the shuffling of alleles."
+    },
+    "x": "Meiosis makes gametes with different allele combinations, and random fertilisation means a different sperm and egg made each child. So each sibling gets a different mix of the parents' alleles.",
+    "b": [
+     {
+      "q": "What is random fertilisation?",
+      "o": [
+       "Any sperm can fuse with any egg",
+       "Parents choose which sperm is used",
+       "Only one sperm is ever made",
+       "Eggs fuse with other eggs"
+      ],
+      "a": 0,
+      "x": "Which sperm meets which egg is down to chance, so each offspring is different."
+     },
+     {
+      "q": "What is random mating?",
+      "o": [
+       "Who mates with whom is down to chance",
+       "Organisms only mate with their siblings",
+       "Every organism mates with every other",
+       "Mating always happens in the spring"
+      ],
+      "a": 0,
+      "x": "Which partners pair up varies, mixing alleles in the population."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "s8",
+  "title": "Putting it together",
+  "teach": "\n<p>Exam questions often give you a list of features and ask you to <b>classify</b> them. For each one, ask two questions:</p>\n<ol class=\"steps\"><li><b>Continuous or discontinuous?</b> Can there be in-between values?</li><li><b>Genetic, environmental or both?</b> Is it inherited, caused by surroundings, or a mix?</li></ol>\n{{FIG:sort}}",
+  "checks": [
+   {
+    "id": "c15",
+    "q": "How would you classify a person's body mass?",
+    "o": [
+     "Continuous; caused by genes and environment",
+     "Discontinuous; caused by genes only",
+     "Continuous; caused by genes only",
+     "Discontinuous; caused by environment only"
+    ],
+    "a": 0,
+    "w": {
+     "1": "Mass can be any value on a scale, so it's continuous, and diet affects it too.",
+     "2": "Mass is continuous, but diet and exercise also affect it, so it isn't genes only.",
+     "3": "Mass is measured on a scale, so it's continuous, and genes play a part too."
+    },
+    "x": "Mass can take any value (continuous) and depends on both genes and environment (diet and exercise).",
+    "b": [
+     {
+      "q": "Can body mass have in-between values?",
+      "o": [
+       "Yes, any value on a scale",
+       "No, only two categories",
+       "No, only four categories",
+       "Only for adults"
+      ],
+      "a": 0,
+      "x": "Mass can be 61.2 kg, 61.3 kg and so on, so it's continuous."
+     },
+     {
+      "q": "Which factor in the environment affects body mass?",
+      "o": [
+       "Diet",
+       "Blood group",
+       "Eye colour",
+       "Ear lobe type"
+      ],
+      "a": 0,
+      "x": "Eating too much and exercising little causes weight gain."
+     }
+    ]
+   },
+   {
+    "id": "c16",
+    "q": "A scientist records the eye colour of 100 people. Which graph should she draw?",
+    "o": [
+     "A bar chart with gaps between bars",
+     "A histogram with the bars touching",
+     "A smooth, bell-shaped frequency curve",
+     "A line graph plotted against time"
+    ],
+    "a": 0,
+    "w": {
+     "1": "A histogram is for continuous data. Eye colour falls into separate categories.",
+     "2": "A bell curve is for continuous data such as height.",
+     "3": "There's no time variable here. She's counting how many people are in each category."
+    },
+    "x": "Eye colour has distinct categories (blue, brown, green…), so it's discontinuous and should be shown as a bar chart with gaps.",
+    "b": [
+     {
+      "q": "Is eye colour continuous or discontinuous?",
+      "o": [
+       "Discontinuous: distinct categories",
+       "Continuous: many in-between values",
+       "Both at the same time",
+       "Neither"
+      ],
+      "a": 0,
+      "x": "Eye colour is treated as discontinuous at IGCSE: distinct colour groups."
+     },
+     {
+      "q": "Why does a bar chart have gaps between the bars?",
+      "o": [
+       "The categories are separate",
+       "To save space on the page",
+       "Because data are missing",
+       "To show the data are continuous"
+      ],
+      "a": 0,
+      "x": "Gaps show the categories are distinct, with no in-betweens."
+     }
+    ]
+   }
+  ]
+ }
+];
+const SUMMARY = [
+ "Variation is the differences between individuals of the same species. Phenotypic variation is differences in features.",
+ "Continuous variation has many small differences on a scale (height, mass). Discontinuous variation has distinct categories (blood group, biological sex, tongue rolling).",
+ "Continuous data give a bell-shaped histogram. Discontinuous data give a step-like bar chart with gaps.",
+ "Variation can be genetic (blood group, eye colour, ear lobes) or environmental (scars, accent, weight gain, a shaded plant growing tall).",
+ "Extended: discontinuous variation is usually caused by genes alone; continuous variation by genes and environment together.",
+ "Mutations are genetic changes. Most have no effect, some are harmful (sickle cell anaemia) and a few give an advantage.",
+ "Ionising radiation (X-rays, gamma rays), some UV and chemicals such as tar increase the mutation rate and the risk of cancer.",
+ "Extended: genetic variation comes from mutation (new alleles), meiosis, random mating and random fertilisation."
+];
+
+/* ===== Diagrams ===== */
+const F = {};
+
+function barChart(o) {
+  const W = 600, H = o.rotate ? 350 : 330, L = 64, R = 14, T = 16, B = o.rotate ? 92 : 70;
+  const pw = W - L - R, ph = H - T - B, n = o.bars.length;
+  const slot = pw / n, bw = o.touch ? slot : slot * 0.62;
+  const sy = v => T + ph - v / o.ymax * ph;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria}">`;
+  o.yticks.forEach(t => { s += `<line class="grid" x1="${L}" y1="${sy(t)}" x2="${L + pw}" y2="${sy(t)}"/><text class="num" x="${L - 8}" y="${sy(t) + 4}" text-anchor="end">${t}</text>`; });
+  o.bars.forEach(([lab, v], i) => {
+    const x = L + i * slot + (slot - bw) / 2;
+    s += `<rect class="bar ${o.cls}" x="${x.toFixed(1)}" y="${sy(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(T + ph - sy(v)).toFixed(1)}"/>`;
+    if (o.values) s += `<text class="num b" x="${(x + bw / 2).toFixed(1)}" y="${(sy(v) - 6).toFixed(1)}" text-anchor="middle">${v}%</text>`;
+    s += `<text class="${o.rotate ? "num tick-r" : "lbl"}" ${o.rotate ? `transform="translate(${(x + bw / 2).toFixed(1)} ${T + ph + 12}) rotate(-40)" text-anchor="end"` : `x="${(x + bw / 2).toFixed(1)}" y="${T + ph + 24}" text-anchor="middle"`}>${lab}</text>`;
+  });
+  if (o.curve) {
+    const mu = o.curve.mu, sd = o.curve.sd, pk = o.curve.peak; let d = "";
+    for (let k = 0; k <= 120; k++) { const t = -0.5 + (n) * k / 120; const v = pk * Math.exp(-((t - mu) ** 2) / (2 * sd * sd)); const x = L + (t + 0.5) * slot; d += (k ? " L " : "M ") + x.toFixed(1) + " " + sy(v).toFixed(1); }
+    s += `<path class="bell" d="${d}"/>`;
+  }
+  s += `<line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${T + ph}"/><line class="axis" x1="${L}" y1="${T + ph}" x2="${L + pw}" y2="${T + ph}"/>`;
+  s += `<text class="axis-t" x="${L + pw / 2}" y="${H - 6}" text-anchor="middle">${o.xlabel}</text>`;
+  s += `<text class="axis-t" transform="translate(16 ${T + ph / 2}) rotate(-90)" text-anchor="middle">${o.ylabel}</text></svg>`;
+  return s;
+}
+
+F.height = () => `<figure class="fig">${barChart({ touch: true, curve: { mu: 5.4, sd: 2.1, peak: 26 }, rotate: true, cls: "b-cont", ymax: 30, yticks: [0, 5, 10, 15, 20, 25, 30],
+  xlabel: "Height / cm", ylabel: "Number of people",
+  aria: "Histogram of heights from up to 129 cm to over 175 cm. Bars touch. The numbers rise to a peak at 150 to 159 cm and then fall, forming a smooth bell-shaped curve.",
+  bars: [["≤129", 2], ["130–134", 4], ["135–139", 8], ["140–144", 14], ["145–149", 21], ["150–154", 26], ["155–159", 25], ["160–164", 19], ["165–169", 12], ["170–174", 6], ["≥175", 3]] })}
+  <figcaption>Height is continuous variation: a smooth, bell-shaped curve. Most people are near the middle.</figcaption></figure>`;
+
+F.blood = () => `<figure class="fig">${barChart({ touch: false, values: true, cls: "b-disc", ymax: 50, yticks: [0, 10, 20, 30, 40, 50],
+  xlabel: "Blood group", ylabel: "Percentage of population",
+  aria: "Bar chart of blood groups with gaps between bars: A 40%, B 9%, AB 3%, O 46%.",
+  bars: [["A", 40], ["B", 9], ["AB", 3], ["O", 46]] })}
+  <figcaption>Blood group is discontinuous variation: separate categories give a step-like bar chart.</figcaption></figure>`;
+
+F.ears = () => `<figure class="fig"><svg viewBox="0 0 600 250" role="img" aria-label="Two ears. Left: a free ear lobe that hangs down below where the ear joins the head. Right: an attached ear lobe that joins straight onto the side of the head.">
+  <line class="head" x1="150" y1="20" x2="150" y2="220"/><line class="head" x1="430" y1="20" x2="430" y2="220"/>
+  <path class="ear" d="M 150 50 C 110 20, 60 40, 62 95 C 64 140, 92 150, 96 175 C 100 205, 128 214, 140 196 C 146 186, 146 176, 150 172"/>
+  <path class="ear-in" d="M 120 70 C 92 66, 86 100, 100 120"/>
+  <path class="lobe" d="M 96 175 C 100 205, 128 214, 140 196"/>
+  <text class="lbl b" x="96" y="240" text-anchor="middle">Free lobe</text>
+  <line class="lead" x1="122" y1="206" x2="198" y2="206"/><text class="lbl" x="202" y="210">lobe hangs free</text>
+  <path class="ear" d="M 430 50 C 390 20, 340 40, 342 95 C 344 140, 372 160, 390 182 C 404 198, 420 200, 430 192"/>
+  <path class="ear-in" d="M 400 70 C 372 66, 366 100, 380 120"/>
+  <text class="lbl b" x="376" y="240" text-anchor="middle">Attached lobe</text>
+  <line class="lead" x1="420" y1="196" x2="470" y2="170"/><text class="lbl" x="474" y="160">joins</text><text class="lbl" x="474" y="182">the head</text>
+  <text class="cap" x="150" y="14" text-anchor="middle">side of head</text><text class="cap" x="430" y="14" text-anchor="middle">side of head</text>
+</svg><figcaption>Free or attached ear lobes: an example of genetic, discontinuous variation.</figcaption></figure>`;
+
+F.gxe = () => `<figure class="fig"><div class="chain">
+  <div class="part"><b>Genes from parents</b><span>set the potential height</span></div><i>+</i>
+  <div class="part"><b>Environment</b><span>diet, health, exercise</span></div><i>=</i>
+  <div class="part out"><b>Actual height</b><span>how the potential develops</span></div>
+</div><figcaption>Continuous features usually depend on both genes and environment.</figcaption></figure>`;
+
+F.sources = () => `<figure class="fig"><div class="src4">
+  <div class="tile new"><h4>Mutation</h4><p>Random changes to the base sequence of DNA. Forms <b>new alleles</b>.</p></div>
+  <div class="tile"><h4>Meiosis</h4><p>Makes gametes with new combinations of alleles.</p></div>
+  <div class="tile"><h4>Random mating</h4><p>Which individuals pair up for sexual reproduction is down to chance.</p></div>
+  <div class="tile"><h4>Random fertilisation</h4><p>Which sperm fuses with which egg is down to chance.</p></div>
+</div><figcaption>Only mutation makes new alleles. The other three shuffle existing alleles into new combinations.</figcaption></figure>`;
+
+F.sort = () => `<figure class="fig"><div class="tblwrap"><table class="st">
+  <thead><tr><th>Feature</th><th>Continuous or discontinuous?</th><th>Cause</th></tr></thead>
+  <tbody>
+    <tr><td>Blood group</td><td>Discontinuous</td><td>Genetic</td></tr>
+    <tr><td>Tongue rolling</td><td>Discontinuous</td><td>Genetic</td></tr>
+    <tr><td>Height</td><td>Continuous</td><td>Genes + environment</td></tr>
+    <tr><td>Body mass</td><td>Continuous</td><td>Genes + environment</td></tr>
+    <tr><td>A scar</td><td>–</td><td>Environmental</td></tr>
+    <tr><td>Accent</td><td>–</td><td>Environmental</td></tr>
+  </tbody></table></div><figcaption>A quick way to organise your answer.</figcaption></figure>`;
+
+/* ===== Walk-through engine ===== */
+const KEY = "igcse-bio-variation-walkthrough-v1";
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const LET = "ABCD";
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const CHECKS = SECTIONS.flatMap(s => s.checks);
+
+let P = { sec: 0, res: {} };           // saved progress
+try { const raw = localStorage.getItem(KEY); if (raw) P = Object.assign(P, JSON.parse(raw)); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) {} };
+
+/* Balanced answer positions: each letter is correct equally often, never 3 times running. */
+const bags = { main: [], back: [] }, hist = { main: [], back: [] };
+function deal(name, n, allowed) {
+  const bag = bags[name], h = hist[name];
+  const ok = t => t < n && (!allowed || allowed.includes(t)) && !(h.length >= 2 && h[h.length - 1] === t && h[h.length - 2] === t);
+  let k = -1;
+  for (let tries = 0; tries < 3 && k < 0; tries++) { for (let j = bag.length - 1; j >= 0; j--) if (ok(bag[j])) { k = j; break; } if (k < 0) bag.unshift(...shuffle([0, 1, 2, 3])); }
+  const t = k >= 0 ? bag.splice(k, 1)[0] : (allowed ? allowed[0] : 0); h.push(t); return t;
+}
+function orderFor(n, correct, t, fixed) {
+  const idx = [...Array(n).keys()];
+  if (fixed) { const desc = idx.slice().reverse(); if (n - 1 - correct === t) return desc; if (correct === t) return idx; return Math.random() < .5 ? idx : desc; }
+  const rest = shuffle(idx.filter(i => i !== correct)); rest.splice(t, 0, correct); return rest;
+}
+function order(q, bag) { return orderFor(q.o.length, q.a, deal(bag, q.o.length, q.fixed ? [q.a, q.o.length - 1 - q.a] : null), q.fixed); }
+
+/* Live state of the current check */
+let R = null;
+const sectionDone = i => SECTIONS[i].checks.every(c => P.res[c.id]);
+const unlocked = () => { let i = 0; while (i < SECTIONS.length && sectionDone(i)) i++; return i; }; // first unfinished section
+
+function renderChips() {
+  const u = unlocked();
+  $("#chips").innerHTML = SECTIONS.map((s, i) => `<button type="button" data-i="${i}" class="${sectionDone(i) ? "done" : ""}" ${P.sec === i ? 'aria-current="step"' : ""} ${i > u ? "disabled title=\"Finish the earlier sections first\"" : ""}><span class="n">${sectionDone(i) ? "✓" : i + 1}</span>${esc(s.title)}${s.ext ? '<span class="ext">Ext</span>' : ""}</button>`).join("")
+    + `<button type="button" data-i="end" ${P.sec === "end" ? 'aria-current="step"' : ""} ${u < SECTIONS.length ? "disabled" : ""}><span class="n">★</span>Summary</button>`;
+  $("#chips").querySelectorAll("button").forEach(b => b.addEventListener("click", () => goSection(b.dataset.i === "end" ? "end" : +b.dataset.i)));
+  const cur = $("#chips").querySelector('[aria-current="step"]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: "nearest", inline: "nearest" });
+}
+
+function goSection(i) { P.sec = i; save(); R = null; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); }
+
+function fillFigs(html) { return html.replace(/\{\{FIG:(\w+)\}\}/g, (m, k) => F[k] ? F[k]() : ""); }
+
+function render() {
+  renderChips();
+  if (P.sec === "end") return renderEnd();
+  if (P.sec > unlocked()) P.sec = unlocked();
+  const s = SECTIONS[P.sec];
+  const done = s.checks.filter(c => P.res[c.id]);
+  const next = s.checks.find(c => !P.res[c.id]);
+  $("#main").innerHTML = `
+    <section class="card"><div class="eyebrow">Section ${P.sec + 1} of ${SECTIONS.length}</div><h2>${esc(s.title)}${s.ext ? '<span class="ext">Extended</span>' : ""}</h2><div class="notes">${fillFigs(s.teach)}</div></section>
+    <section class="card check" id="checkcard">
+      ${done.length ? `<div class="passed">${done.map(c => `<div><span class="tag ${P.res[c.id]}">${P.res[c.id] === "first" ? "First try" : P.res[c.id] === "help" ? "After help" : "Revisit"}</span><span>${esc(c.q)}</span></div>`).join("")}</div>` : ""}
+      <div id="qzone"></div>
+    </section>`;
+  wireFig();
+  if (next) startCheck(next);
+  else finishSection();
+}
+
+function wireFig() {
+  const fig = $("#inhib-fig"); if (!fig) return;
+  const show = { normal: true, comp: false, nonc: false };
+  const apply = () => { fig.querySelectorAll("[data-curve]").forEach(g => g.classList.toggle("off", !show[g.dataset.curve])); fig.querySelectorAll(".tog").forEach(b => { b.classList.toggle("on", show[b.dataset.show]); b.setAttribute("aria-pressed", show[b.dataset.show]); }); };
+  fig.querySelectorAll(".tog[data-show]").forEach(b => b.addEventListener("click", () => { if (b.dataset.show !== "normal") { show[b.dataset.show] = !show[b.dataset.show]; apply(); } }));
+  apply();
+}
+
+function startCheck(c) {
+  R = { c, phase: "main", bi: 0, first: null, order: order(c, "main"), bOrder: null };
+  drawQ(); clearLog();
+}
+
+function curQ() { return R.phase === "back" ? R.c.b[R.bi] : R.c; }
+function curOrder() { return R.phase === "back" ? R.bOrder : R.order; }
+
+function drawQ() {
+  const c = R.c, s = SECTIONS[P.sec], q = curQ(), ord = curOrder();
+  const idx = s.checks.indexOf(c) + 1;
+  let label, cls = "";
+  if (R.phase === "main") label = `Check ${idx} of ${s.checks.length}`;
+  else if (R.phase === "back") { label = `Back-up question ${R.bi + 1} of ${c.b.length}`; cls = "backup"; }
+  else { label = `Second try · Check ${idx}`; cls = "retry"; }
+  const trail = R.phase === "main" ? "" : `<div class="trail"><b class="done">Check</b>${c.b.map((_, k) => `<i>→</i><b class="${R.phase === "back" && R.bi === k ? "on" : (R.phase === "retry" || R.bi > k ? "done" : "")}">Back-up ${k + 1}</b>`).join("")}<i>→</i><b class="${R.phase === "retry" ? "on" : ""}">Second try</b></div>`;
+  $("#qzone").innerHTML = `
+    <div class="qhead"><span class="stage ${cls}">${label}</span></div>${trail}
+    ${q.fig ? F[q.fig]() : ""}
+    <p class="stem">${esc(q.q)}</p>
+    <div class="opts" id="opts">${ord.map((oi, pos) => `<button type="button" class="opt" data-oi="${oi}" id="opt-${pos}"><span class="k">${LET[pos]}</span><span>${esc(q.o[oi])}</span><span class="mark"></span></button>`).join("")}</div>
+    <div class="log" id="log" aria-live="polite"></div>
+    <div class="actions" id="actions"></div>`;
+  $("#opts").querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => choose(+b.dataset.oi)));
+}
+function clearLog() { const l = $("#log"); if (l) l.innerHTML = ""; }
+function letter(oi) { return LET[curOrder().indexOf(oi)]; }
+function lock(chosen, correct, reveal) {
+  $("#opts").querySelectorAll(".opt").forEach(b => {
+    const oi = +b.dataset.oi; b.disabled = true;
+    if (oi === chosen && chosen === correct) { b.classList.add("right"); b.querySelector(".mark").textContent = "Correct"; }
+    else if (oi === chosen) { b.classList.add("wrong"); b.querySelector(".mark").textContent = "Your answer"; }
+    else if (oi === correct && reveal) { b.classList.add("right"); b.querySelector(".mark").textContent = "Answer"; }
+    else b.classList.add("dim");
+  });
+}
+function msg(kind, title, text) {
+  const d = document.createElement("div"); d.className = "msg " + kind;
+  d.innerHTML = (title ? `<h3>${esc(title)}</h3>` : "") + `<p>${esc(text)}</p>`;
+  $("#log").appendChild(d);
+}
+function actions(list) {
+  const a = $("#actions"); a.innerHTML = "";
+  list.forEach((it, k) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn" + (it.ghost ? " ghost" : ""); b.textContent = it.label; b.addEventListener("click", it.go); a.appendChild(b); if (k === 0) setTimeout(() => { b.focus({ preventScroll: true }); b.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" }); }, 0); });
+}
+
+function choose(oi) {
+  const c = R.c, q = curQ();
+  if (R.phase === "back") {
+    const ok = oi === q.a; lock(oi, q.a, true);
+    msg(ok ? "good" : "bad", ok ? "Correct" : `The answer is ${letter(q.a)}`, q.x);
+    const last = R.bi === c.b.length - 1;
+    actions([{ label: last ? "Try the check question again" : "Next back-up question", go: () => {
+      if (last) { R.phase = "retry"; const was = R.order.indexOf(c.a); if (c.fixed) { const f = R.order.slice().reverse(); if (f.indexOf(c.a) !== was) R.order = f; } else { const t = shuffle([0, 1, 2, 3].filter(p => p !== was))[0]; R.order = orderFor(4, c.a, t, false); } drawQ(); msg("hint", "Second try", "The options are in a new order, so read them carefully."); }
+      else { R.bi++; R.bOrder = order(c.b[R.bi], "back"); drawQ(); }
+      focusFirst();
+    } }]);
+    return;
+  }
+  const ok = oi === c.a;
+  if (R.phase === "main") {
+    if (ok) { lock(oi, c.a, false); msg("good", "Correct", c.x); record("first"); }
+    else {
+      lock(oi, c.a, false); R.first = oi;
+      msg("bad", `Not quite: ${letter(oi)} isn't right`, c.w[oi] || "That isn't the right answer.");
+      msg("hint", "Let's check the basics", `Answer ${c.b.length} short back-up questions, then try this one again. Re-read the notes above if you need to.`);
+      actions([{ label: "Start the back-up questions", go: () => { R.phase = "back"; R.bi = 0; R.bOrder = order(c.b[0], "back"); drawQ(); focusFirst(); } }]);
+    }
+    return;
+  }
+  lock(oi, c.a, true);
+  if (ok) { msg("good", "Got it on the second try", c.x); record("help"); }
+  else { msg("bad", `Not this time. The answer is ${letter(c.a)}`, (c.w[oi] ? c.w[oi] + " " : "") + c.x); record("miss"); }
+}
+function focusFirst() { const b = $("#opt-0"); if (b) { b.focus({ preventScroll: true }); $("#qzone").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }); } }
+
+function record(result) {
+  P.res[R.c.id] = result; save(); renderChips();
+  const s = SECTIONS[P.sec], next = s.checks.find(c => !P.res[c.id]);
+  if (next) actions([{ label: "Next check question", go: () => { render(); setTimeout(() => $("#checkcard").scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" }), 0); } }]);
+  else actions(sectionNav());
+}
+function sectionNav() {
+  const last = P.sec === SECTIONS.length - 1;
+  return [{ label: last ? "See your summary" : `Next section: ${SECTIONS[P.sec + 1].title}`, go: () => goSection(last ? "end" : P.sec + 1) }];
+}
+function finishSection() {
+  const s = SECTIONS[P.sec];
+  $("#qzone").innerHTML = `<p>You've finished this section's checks.</p><div class="actions" id="actions"></div>`;
+  const a = sectionNav().concat([{ label: "Redo this section's questions", ghost: true, go: () => { s.checks.forEach(c => delete P.res[c.id]); save(); render(); } }]);
+  const box = $("#actions");
+  a.forEach(it => { const b = document.createElement("button"); b.type = "button"; b.className = "btn" + (it.ghost ? " ghost" : ""); b.textContent = it.label; b.addEventListener("click", it.go); box.appendChild(b); });
+}
+
+function renderEnd() {
+  const n = CHECKS.length, c = { first: 0, help: 0, miss: 0 };
+  CHECKS.forEach(k => { if (P.res[k.id]) c[P.res[k.id]]++; });
+  const pts = c.first + c.help * 0.5;
+  const fmt = v => (v % 1 ? Math.floor(v) + "½" : String(v));
+  $("#main").innerHTML = `
+    <section class="card"><div class="eyebrow">Summary</div>
+      <div class="big">${fmt(pts)}<small> / ${n} checks</small></div>
+      <p>${c.first} right first time · ${c.help} right after the back-up questions · ${c.miss} to revisit</p>
+      <div class="secs">${SECTIONS.map((s, i) => { const r = s.checks.map(k => P.res[k.id]); const worst = r.includes("miss") ? "miss" : r.includes("help") ? "help" : "first";
+        return `<div class="row"><span><span class="tag ${worst}">${worst === "first" ? "Secure" : worst === "help" ? "Getting there" : "Revisit"}</span> ${esc(s.title)}</span><button type="button" class="linkbtn" data-go="${i}">Go to section</button></div>`; }).join("")}</div>
+    </section>
+    <section class="card"><h2>Key points</h2><ol class="keys">${SUMMARY.map(t => `<li>${esc(t)}</li>`).join("")}</ol>
+      <div class="actions"><button type="button" class="btn ghost" id="restart">Start again from the beginning</button><span id="confirm" class="note"></span></div></section>`;
+  $("#main").querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => goSection(+b.dataset.go)));
+  let armed = false;
+  $("#restart").addEventListener("click", () => {
+    if (!armed) { armed = true; $("#confirm").textContent = "This clears your answers. Click again to confirm."; setTimeout(() => { armed = false; const el = $("#confirm"); if (el) el.textContent = ""; }, 5000); return; }
+    P = { sec: 0, res: {} }; save(); goSection(0);
+  });
+}
+
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || !R) return;
+  const i = "ABCD".indexOf(e.key.toUpperCase()); const j = i >= 0 ? i : "1234".indexOf(e.key);
+  if (j >= 0 && e.key.length === 1) { const b = $("#opt-" + j); if (b && !b.disabled) { e.preventDefault(); b.click(); } }
+});
+
+render();
+
+</script>
+</body>
+</html>
